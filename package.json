@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node --watch Entrega_01/ProductManager.js"
+    "start": "node --watch Entrega_02/ProductManager.js"
   },
   "keywords": [],
   "author": "",
