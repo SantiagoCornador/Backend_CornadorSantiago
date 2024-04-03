@@ -85,35 +85,3 @@ class ProductManager {
         return this.products
     }
 }
-
-const path = './products.json'; // Asegúrate de que esta ruta apunte a un archivo que no contenga datos iniciales
-const productManager = new ProductManager(path);
-
-
-const newProduct = productManager.addProduct({
-    title: "producto prueba",
-    description: "Este es un producto prueba",
-    price: 200,
-    thumbnail: "Sin imagen",
-    code: "abc123",
-    stock: 25
-});
-
-const products = productManager.getProducts();
-
-try {
-    const product = productManager.getProductById(1); // Asume que 1 es un ID que sabes que no existe
-    console.log(product);
-} catch (error) {
-    console.error(error.message); // Esto imprimirá "Producto no encontrado" si el producto no se encuentra
-}
-
-
-//const pm = new ProductManager('./products.json')
-
-
-//const p1 = pm.addProduct({ title: "producto prueba", description: "Este es un producto prueba", price: "200", thumbnail: "Sin imagen", code: "abc123", stock: "25" })
-
-//pm.updateProduct(1, {title: "Nuevo título", description: "Nueva descripción"});
-
-//pm.deleteProduct(1);
