@@ -1,12 +1,15 @@
 {
-  "name": "clase-02-",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "start": "node --watch Entrega_02/ProductManager.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "name": "clase-02-",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "start": "node --watch entrega_02b/productos.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.19.2"
+    }
 }
