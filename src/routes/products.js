@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs').promises;
 
-// Listar todos los productos
 router.get('/', async (req, res) => {
     try {
         const limit = req.query.limit ? parseInt(req.query.limit) : null;
@@ -16,7 +15,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Obtener un producto por su ID
 router.get('/:pid', async (req, res) => {
     const productId = req.params.pid;
     try {
@@ -33,19 +31,15 @@ router.get('/:pid', async (req, res) => {
     }
 });
 
-// Agregar un nuevo producto
 router.post('/', async (req, res) => {
     const newProduct = req.body;
     try {
-        // Validar campos obligatorios
         if (!newProduct.title || !newProduct.description || !newProduct.code || !newProduct.price || !newProduct.stock || !newProduct.category) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
-        // Leer productos existentes
         const productos = await fs.readFile('productos.json', 'utf8');
         const parsedProductos = JSON.parse(productos);
-        // Generar ID único para el nuevo producto
-        const id = Date.now().toString(); // Puedes implementar un generador de IDs más robusto
+        const id = Date.now().toString();
         const productoConId = {
             id,
             title: newProduct.title,
@@ -57,9 +51,7 @@ router.post('/', async (req, res) => {
             category: newProduct.category,
             thumbnails: newProduct.thumbnails || []
         };
-        // Agregar el nuevo producto
         parsedProductos.push(productoConId);
-        // Guardar en el archivo
         await fs.writeFile('productos.json', JSON.stringify(parsedProductos, null, 2));
         res.json(productoConId);
     } catch (error) {
@@ -69,22 +61,17 @@ router.post('/', async (req, res) => {
 });
 
 
-// Actualizar un producto por su ID
 router.put('/:pid', async (req, res) => {
     const productId = req.params.pid;
     const updatedProduct = req.body;
     try {
-        // Leer productos existentes
         const productos = await fs.readFile('productos.json', 'utf8');
         let parsedProductos = JSON.parse(productos);
-        // Buscar el producto a actualizar
         const index = parsedProductos.findIndex(prod => prod.id === productId);
         if (index === -1) {
             return res.status(404).json({ error: 'Producto no encontrado' });
         }
-        // Actualizar el producto
         parsedProductos[index] = { ...parsedProductos[index], ...updatedProduct };
-        // Guardar en el archivo
         await fs.writeFile('productos.json', JSON.stringify(parsedProductos, null, 2));
         res.json(parsedProductos[index]);
     } catch (error) {
@@ -93,16 +80,12 @@ router.put('/:pid', async (req, res) => {
     }
 });
 
-// Eliminar un producto por su ID
 router.delete('/:pid', async (req, res) => {
     const productId = req.params.pid;
     try {
-        // Leer productos existentes
         const productos = await fs.readFile('productos.json', 'utf8');
         let parsedProductos = JSON.parse(productos);
-        // Filtrar el producto a eliminar
         parsedProductos = parsedProductos.filter(prod => prod.id !== productId);
-        // Guardar en el archivo
         await fs.writeFile('productos.json', JSON.stringify(parsedProductos, null, 2));
         res.json({ message: 'Producto eliminado correctamente' });
     } catch (error) {

@@ -1,6 +1,6 @@
 [
   {
-    "id": "1713915700476",
+    "id": "1713916344121",
     "products": [
       {
         "title": "Producto 1",
@@ -10,10 +10,7 @@
         "status": true,
         "stock": 100,
         "category": "Electrónica",
-        "thumbnails": [
-          "ruta1.jpg",
-          "ruta2.jpg"
-        ],
+        "thumbnails": [],
         "quantity": 2
       },
       {
@@ -24,10 +21,7 @@
         "status": true,
         "stock": 50,
         "category": "Ropa",
-        "thumbnails": [
-          "ruta3.jpg",
-          "ruta4.jpg"
-        ],
+        "thumbnails": [],
         "quantity": 3
       }
     ]

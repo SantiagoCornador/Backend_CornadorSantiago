@@ -1,47 +1,47 @@
 [
-  {
-    "id": "1713912373718",
-    "title": "producto prueba2",
-    "description": "Este es un producto prueba2",
-    "code": "abc123",
-    "price": 500,
-    "status": true,
-    "stock": 55,
-    "category": "buzos",
-    "thumbnails": []
-  },
-  {
-    "id": "1713912420686",
-    "title": "producto prueba3",
-    "description": "Este es un producto prueba3",
-    "code": "abc3",
-    "price": 300,
-    "status": true,
-    "stock": 35,
-    "category": "buzos",
-    "thumbnails": []
-  },
-  {
-    "id": "1713912435468",
-    "title": "producto prueba4",
-    "description": "Este es un producto prueba4",
-    "code": "abc4",
-    "price": 400,
-    "status": true,
-    "stock": 45,
-    "category": "buzos",
-    "thumbnails": []
-  },
-  {
-    "id": "1713912445840",
-    "title": "producto Actualizado",
-    "description": "Este es un producto prueba6",
-    "code": "abc6",
-    "price": 500,
-    "status": true,
-    "stock": 55,
-    "category": "buzos",
-    "thumbnails": [],
-    "thumbnail": "Sin imagen"
-  }
+    {
+        "id": "1713912373718",
+        "title": "producto prueba2",
+        "description": "Este es un producto prueba2",
+        "code": "abc123",
+        "price": 500,
+        "status": true,
+        "stock": 55,
+        "category": "buzos",
+        "thumbnails": []
+    },
+    {
+        "id": "1713912420686",
+        "title": "producto prueba3",
+        "description": "Este es un producto prueba3",
+        "code": "abc3",
+        "price": 300,
+        "status": true,
+        "stock": 35,
+        "category": "buzos",
+        "thumbnails": []
+    },
+    {
+        "id": "1713912435468",
+        "title": "producto prueba4",
+        "description": "Este es un producto prueba4",
+        "code": "abc4",
+        "price": 400,
+        "status": true,
+        "stock": 45,
+        "category": "buzos",
+        "thumbnails": []
+    },
+    {
+        "id": "1713912445840",
+        "title": "producto Actualizado",
+        "description": "Este es un producto prueba6",
+        "code": "abc6",
+        "price": 500,
+        "status": true,
+        "stock": 55,
+        "category": "buzos",
+        "thumbnails": [],
+        "thumbnail": "Sin imagen"
+    }
 ]
