@@ -1,15 +1,15 @@
 {
-    "name": "clase-02-",
-    "version": "1.0.0",
-    "description": "",
-    "main": "app.js",
-    "scripts": {
-        "start": "node --watch entrega_02b/productos.js"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "express": "^4.19.2"
-    }
+  "name": "routes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "carts.js",
+  "scripts": {
+    "start": "node --watch /src/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }
