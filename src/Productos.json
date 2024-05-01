@@ -31,5 +31,39 @@
     "stock": 55,
     "category": "buzos",
     "thumbnails": []
+  },
+  {
+    "id": 4,
+    "title": "Remera",
+    "description": "Remera algodón",
+    "code": "123456Remera",
+    "price": 500,
+    "status": true,
+    "stock": 55,
+    "category": "buzos",
+    "thumbnails": []
+  },
+  {
+    "id": 5,
+    "title": "Remera lisa roja",
+    "description": "Remera algodón",
+    "code": "123456Remera",
+    "price": 500,
+    "status": true,
+    "stock": 55,
+    "category": "buzos",
+    "thumbnails": []
+  },
+  {
+    "id": 6,
+    "title": "Pantalon",
+    "description": "Short corto ",
+    "price": "600"
+  },
+  {
+    "id": 7,
+    "title": "Campera",
+    "description": "Campera Jean",
+    "price": "5000"
   }
 ]

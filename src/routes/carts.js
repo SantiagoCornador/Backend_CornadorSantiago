@@ -1,16 +1,17 @@
-const express = require('express');
+import express from 'express';
+import { promises as fsPromises } from 'fs';
+
 const router = express.Router();
-const fs = require('fs').promises;
 
 router.post('/', async (req, res) => {
     try {
-        const carritos = await fs.readFile('src/carritos.json', 'utf8');
-        const parsedCarritos = JSON.parse(carritos);
-        const id = parsedCarritos.length > 0 ? parsedCarritos [parsedCarritos.length - 1].id + 1 : 1;
+        const carritosData = await fsPromises.readFile('src/carritos.json', 'utf8');
+        const parsedCarritos = JSON.parse(carritosData);
+        const id = parsedCarritos.length > 0 ? parsedCarritos[parsedCarritos.length - 1].id + 1 : 1;
         const { products } = req.body;
         const newCart = { id, products };
         parsedCarritos.push(newCart);
-        await fs.writeFile('src/carritos.json', JSON.stringify(parsedCarritos, null, 2));
+        await fsPromises.writeFile('src/carritos.json', JSON.stringify(parsedCarritos, null, 2));
         res.json(newCart);
     } catch (error) {
         console.error('Error al crear carrito:', error);
@@ -19,10 +20,10 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/:cid', async (req, res) => {
-    const cartId = parseInt (req.params.cid);
+    const cartId = parseInt(req.params.cid);
     try {
-        const carritos = await fs.readFile('src/carritos.json', 'utf8');
-        const parsedCarritos = JSON.parse(carritos);
+        const carritosData = await fsPromises.readFile('src/carritos.json', 'utf8');
+        const parsedCarritos = JSON.parse(carritosData);
         const cart = parsedCarritos.find(cart => cart.id === cartId);
         if (!cart) {
             return res.status(404).json({ error: 'Carrito no encontrado' });
@@ -39,8 +40,8 @@ router.post('/:cid/product/:pid', async (req, res) => {
     const productId = parseInt(req.params.pid);
     const { quantity } = req.body;
     try {
-        const carritos = await fs.readFile('src/carritos.json', 'utf8');
-        const parsedCarritos = JSON.parse(carritos);
+        const carritosData = await fsPromises.readFile('src/carritos.json', 'utf8');
+        const parsedCarritos = JSON.parse(carritosData);
         const cart = parsedCarritos.find(cart => cart.id === cartId);
         if (!cart) {
             return res.status(404).json({ error: 'Carrito no encontrado' });
@@ -51,8 +52,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
         } else {
             cart.products.push({ id: productId, quantity });
         }
-        await fs.writeFile('src/carritos.json', JSON.stringify(parsedCarritos, null, 2));
-        req.io.emit('productAdded', { cartId, productId, quantity });
+        await fsPromises.writeFile('src/carritos.json', JSON.stringify(parsedCarritos, null, 2));
         res.json(cart);
     } catch (error) {
         console.error('Error al agregar producto al carrito:', error);
@@ -60,5 +60,4 @@ router.post('/:cid/product/:pid', async (req, res) => {
     }
 });
 
-
-module.exports = router;
+export default router;

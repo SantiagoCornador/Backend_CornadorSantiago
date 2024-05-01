@@ -3,28 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real Time Products</title>
+    <title>Productos actualizados</title>
 </head>
 <body>
-    <h1>Real Time Products</h1>
-    <ul id="product-list">
+    <h1>Productos actualizados</h1>
+    <ul id="productList">
         {{#each productos}}
-        <li>{{this}}</li>
+            <li>{{this.title}} - {{this.description}} - ${{this.price}}</li>
         {{/each}}
     </ul>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+    <h2>Agregar Producto</h2>
+    <form id="addProductForm">
+        <label for="title">Título:</label>
+        <input type="text" id="title" name="title"><br>
+        <label for="description">Descripción:</label>
+        <input type="text" id="description" name="description"><br>
+        <label for="price">Precio:</label>
+        <input type="text" id="price" name="price"><br>
+        <button type="submit">Agregar Producto</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
     <script>
+        const socket = io(); 
 
-        const socket = io();
-
-
-        socket.on('productoAgregado', (producto) => {
-
-            const productList = document.getElementById('product-list');
+        socket.on('newProduct', (newProduct) => {
+            const productList = document.getElementById('productList');
             const listItem = document.createElement('li');
-            listItem.textContent = producto;
+            listItem.textContent = `${newProduct.title} - ${newProduct.description} - $${newProduct.price}`;
             productList.appendChild(listItem);
+        });
+
+        document.getElementById('addProductForm').addEventListener('submit', (event) => {
+            event.preventDefault(); 
+
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const price = document.getElementById('price').value;
+
+            socket.emit('addProduct', { title, description, price });
         });
     </script>
 </body>
