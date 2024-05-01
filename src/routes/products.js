@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs').promises;
+let productos = []
 
 router.get('/', async (req, res) => {
     try {
         const limit = req.query.limit ? parseInt(req.query.limit) : null;
-        const productos = await fs.readFile('productos.json', 'utf8');
+        const productos = await fs.readFile('src/productos.json', 'utf8');
         const parsedProductos = JSON.parse(productos);
         const limitedProductos = limit ? parsedProductos.slice(0, limit) : parsedProductos;
         res.json(limitedProductos);
@@ -16,9 +17,9 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:pid', async (req, res) => {
-    const productId = req.params.pid;
+    const productId = parseInt(req.params.pid);
     try {
-        const productos = await fs.readFile('productos.json', 'utf8');
+        const productos = await fs.readFile('src/productos.json', 'utf8');
         const parsedProductos = JSON.parse(productos);
         const product = parsedProductos.find(prod => prod.id === productId);
         if (!product) {
@@ -37,9 +38,9 @@ router.post('/', async (req, res) => {
         if (!newProduct.title || !newProduct.description || !newProduct.code || !newProduct.price || !newProduct.stock || !newProduct.category) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
-        const productos = await fs.readFile('productos.json', 'utf8');
+        const productos = await fs.readFile('src/productos.json', 'utf8');
         const parsedProductos = JSON.parse(productos);
-        const id = Date.now().toString();
+        const id = parsedProductos.length > 0 ? parsedProductos[parsedProductos.length - 1].id + 1 : 1;
         const productoConId = {
             id,
             title: newProduct.title,
@@ -52,8 +53,9 @@ router.post('/', async (req, res) => {
             thumbnails: newProduct.thumbnails || []
         };
         parsedProductos.push(productoConId);
-        await fs.writeFile('productos.json', JSON.stringify(parsedProductos, null, 2));
+        await fs.writeFile('src/productos.json', JSON.stringify(parsedProductos, null, 2));
         res.json(productoConId);
+        req.io.emit('productoAgregado', nuevoProducto);
     } catch (error) {
         console.error('Error al agregar producto:', error);
         res.status(500).json({ error: 'Error al agregar producto' });
@@ -62,17 +64,17 @@ router.post('/', async (req, res) => {
 
 
 router.put('/:pid', async (req, res) => {
-    const productId = req.params.pid;
+    const productId = parseInt(req.params.pid);
     const updatedProduct = req.body;
     try {
-        const productos = await fs.readFile('productos.json', 'utf8');
+        const productos = await fs.readFile('src/productos.json', 'utf8');
         let parsedProductos = JSON.parse(productos);
         const index = parsedProductos.findIndex(prod => prod.id === productId);
         if (index === -1) {
             return res.status(404).json({ error: 'Producto no encontrado' });
         }
         parsedProductos[index] = { ...parsedProductos[index], ...updatedProduct };
-        await fs.writeFile('productos.json', JSON.stringify(parsedProductos, null, 2));
+        await fs.writeFile('src/productos.json', JSON.stringify(parsedProductos, null, 2));
         res.json(parsedProductos[index]);
     } catch (error) {
         console.error('Error al actualizar producto:', error);
@@ -81,12 +83,12 @@ router.put('/:pid', async (req, res) => {
 });
 
 router.delete('/:pid', async (req, res) => {
-    const productId = req.params.pid;
+    const productId = parseInt(req.params.pid);
     try {
-        const productos = await fs.readFile('productos.json', 'utf8');
+        const productos = await fs.readFile('src/productos.json', 'utf8');
         let parsedProductos = JSON.parse(productos);
         parsedProductos = parsedProductos.filter(prod => prod.id !== productId);
-        await fs.writeFile('productos.json', JSON.stringify(parsedProductos, null, 2));
+        await fs.writeFile('src/productos.json', JSON.stringify(parsedProductos, null, 2));
         res.json({ message: 'Producto eliminado correctamente' });
     } catch (error) {
         console.error('Error al eliminar producto:', error);

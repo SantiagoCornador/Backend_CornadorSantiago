@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Time Products</title>
+</head>
+<body>
+    <h1>Real Time Products</h1>
+    <ul id="product-list">
+        {{#each productos}}
+        <li>{{this}}</li>
+        {{/each}}
+    </ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+    <script>
+
+        const socket = io();
+
+
+        socket.on('productoAgregado', (producto) => {
+
+            const productList = document.getElementById('product-list');
+            const listItem = document.createElement('li');
+            listItem.textContent = producto;
+            productList.appendChild(listItem);
+        });
+    </script>
+</body>
+</html>

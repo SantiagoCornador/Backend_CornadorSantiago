@@ -4,13 +4,13 @@ const fs = require('fs').promises;
 
 router.post('/', async (req, res) => {
     try {
-        const carritos = await fs.readFile('carritos.json', 'utf8');
+        const carritos = await fs.readFile('src/carritos.json', 'utf8');
         const parsedCarritos = JSON.parse(carritos);
-        const id = Date.now().toString();
+        const id = parsedCarritos.length > 0 ? parsedCarritos [parsedCarritos.length - 1].id + 1 : 1;
         const { products } = req.body;
         const newCart = { id, products };
         parsedCarritos.push(newCart);
-        await fs.writeFile('carritos.json', JSON.stringify(parsedCarritos, null, 2));
+        await fs.writeFile('src/carritos.json', JSON.stringify(parsedCarritos, null, 2));
         res.json(newCart);
     } catch (error) {
         console.error('Error al crear carrito:', error);
@@ -19,9 +19,9 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/:cid', async (req, res) => {
-    const cartId = req.params.cid;
+    const cartId = parseInt (req.params.cid);
     try {
-        const carritos = await fs.readFile('carritos.json', 'utf8');
+        const carritos = await fs.readFile('src/carritos.json', 'utf8');
         const parsedCarritos = JSON.parse(carritos);
         const cart = parsedCarritos.find(cart => cart.id === cartId);
         if (!cart) {
@@ -35,28 +35,30 @@ router.get('/:cid', async (req, res) => {
 });
 
 router.post('/:cid/product/:pid', async (req, res) => {
-    const cartId = req.params.cid;
-    const productId = req.params.pid;
+    const cartId = parseInt(req.params.cid);
+    const productId = parseInt(req.params.pid);
     const { quantity } = req.body;
     try {
-        const carritos = await fs.readFile('carritos.json', 'utf8');
+        const carritos = await fs.readFile('src/carritos.json', 'utf8');
         const parsedCarritos = JSON.parse(carritos);
         const cart = parsedCarritos.find(cart => cart.id === cartId);
         if (!cart) {
             return res.status(404).json({ error: 'Carrito no encontrado' });
         }
-        const existingProductIndex = cart.products.findIndex(item => item.productId === productId);
-        if (existingProductIndex !== -1) {
-            cart.products[existingProductIndex].quantity += quantity;
+        const existingProduct = cart.products.find(item => item.id === productId);
+        if (existingProduct) {
+            existingProduct.quantity += quantity;
         } else {
-            cart.products.push({ productId, quantity });
+            cart.products.push({ id: productId, quantity });
         }
-        await fs.writeFile('carritos.json', JSON.stringify(parsedCarritos, null, 2));
+        await fs.writeFile('src/carritos.json', JSON.stringify(parsedCarritos, null, 2));
+        req.io.emit('productAdded', { cartId, productId, quantity });
         res.json(cart);
     } catch (error) {
         console.error('Error al agregar producto al carrito:', error);
         res.status(500).json({ error: 'Error al agregar producto al carrito' });
     }
 });
+
 
 module.exports = router;
